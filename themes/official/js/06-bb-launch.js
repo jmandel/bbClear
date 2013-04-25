@@ -9,6 +9,7 @@ License: Apache */
   listen("message", window, receiveMessage);
 
   function receiveMessage(event){
+    console.log("received", event);
     if (approvedOrigins.indexOf(event.origin) === -1){
       return;
     }
@@ -22,8 +23,15 @@ License: Apache */
     var url = $('.launchURL', button.parent()).val();
     var origin = extractOrigin(url);
     approvedOrigins.push(origin);
+    console.log(approvedOrigins, "approved");
 
     button.attr('href', url);
+    if (event.preventDefault){
+      event.preventDefault();
+    } else { // IE...
+      event.returnValue = false;
+    }
+    window.open(url, "_blank");
 
     console.log(button, url);
   });
